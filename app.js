@@ -66,3 +66,5 @@ sequelize.initDb() // Synchronisation des modèles avec la base de données
     .catch(err => {
         console.error("Erreur lors de l'initialisation de la base de données :", err);
     });
+
+
