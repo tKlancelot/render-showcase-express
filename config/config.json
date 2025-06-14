@@ -1,0 +1,24 @@
+{
+    "development": {
+      "username": "root",
+      "password": "root",
+      "database": "blog_leviathan",
+      "host": "127.0.0.1",
+      "dialect": "mysql"
+    },
+    "test": {
+      "username": "root",
+      "password": "root",
+      "database": "blog_leviathan_test",
+      "host": "127.0.0.1",
+      "dialect": "mysql"
+    },
+    "production": {
+      "username": "root",
+      "password": "ton_mot_de_passe",
+      "database": "nom_de_ta_base_prod",
+      "host": "127.0.0.1",
+      "dialect": "mysql"
+    }
+  }
+  
