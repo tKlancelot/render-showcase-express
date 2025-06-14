@@ -16,8 +16,15 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
   host: DB_HOST,
   port: DB_PORT,
   dialect: DB_DIALECT,
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
+  },
   logging: false,
 });
+
 
 // Initialiser les modèles
 const User = UserModel(sequelize, DataTypes);
@@ -54,7 +61,7 @@ const initDb = async () => {
     console.log('La synchronisation des modèles est terminée.');
     await createDefaultUser();
     console.log(`Connexion DB : ${DB_DIALECT}://${DB_USER}@${DB_HOST}:${DB_PORT}/${DB_NAME}`);
-    console.log(process.env);
+    // console.log(process.env);
   } catch (error) {
     console.error("Erreur lors de l'initialisation de la base de données :", error);
   }
