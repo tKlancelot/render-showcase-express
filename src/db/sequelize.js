@@ -1,6 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const UserModel = require('../models/user');
 const PageSettingModel = require('../models/pageSettings');
+const ContactMessageModel = require('../models/contactMessage');
 const bcrypt = require('bcryptjs');
 
 // Lire les variables d'environnement
@@ -29,6 +30,7 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
 // Initialiser les modèles
 const User = UserModel(sequelize, DataTypes);
 const PageSetting = PageSettingModel(sequelize, DataTypes);
+const ContactMessage = ContactMessageModel(sequelize, DataTypes);
 
 
 // Créer un utilisateur par défaut
@@ -72,4 +74,5 @@ module.exports = {
   sequelize,
   User,
   PageSetting,
+  ContactMessage
 };

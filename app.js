@@ -3,6 +3,7 @@ const favicon = require('serve-favicon');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const sequelize = require('./src/db/sequelize');
+require('dotenv').config();
 
 // Configuration
 const app = express();
@@ -45,6 +46,10 @@ sequelize.initDb() // Synchronisation des modèles avec la base de données
         require('./src/routes/createPageSetting')(app);
         require('./src/routes/updatePageSetting')(app);
         require('./src/routes/deletePageSetting')(app);
+
+        // Contact Messages 
+        require('./src/routes/contactMessage')(app);
+
 
         // Gestion des erreurs 404
         app.use((req, res, next) => {

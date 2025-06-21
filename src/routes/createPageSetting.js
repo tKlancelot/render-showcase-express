@@ -4,7 +4,7 @@ const upload = require('../middleware/upload');  // Utiliser le middleware multe
 const verifyToken = require('../auth/verifyToken');
 
 module.exports = (app) => {
-  app.post('/api/pagesettings', upload.single('image'), verifyToken, async (req, res) => {
+  app.post('/api/pagesettings', verifyToken, upload.single('image'), async (req, res) => {
     try {
       const { key, value, type } = req.body;
       let imageUrl = null;
