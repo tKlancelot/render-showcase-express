@@ -15,6 +15,7 @@ module.exports = (app) => {
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
+      console.log("Requête reçue avec :", { username, role, mainPicture });
 
       const user = await User.create({
         username,
