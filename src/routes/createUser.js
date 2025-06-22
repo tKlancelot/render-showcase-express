@@ -9,13 +9,16 @@ module.exports = (app) => {
     const { username, password, role } = req.body;
     const mainPicture = req.file ? req.file.path : null; // l’URL Cloudinary est dans file.path
 
+    console.log("Body:", req.body);
+    console.log("File:", req.file);
+    console.log("Requête reçue avec :", { username, role, mainPicture });
+
     try {
       if (!password) {
         return res.status(400).json({ message: 'Le mot de passe est requis' });
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
-      console.log("Requête reçue avec :", { username, role, mainPicture });
 
       const user = await User.create({
         username,
