@@ -26,7 +26,7 @@ module.exports = (app) => {
       res.status(201).json({ data: user });
     } catch (error) {
       console.error('Erreur lors de la création de l’utilisateur:', error);
-      res.status(500).json({ message: 'Une erreur est survenue.' });
+      res.status(500).json({ message: error.message });
     }
   });
 };
