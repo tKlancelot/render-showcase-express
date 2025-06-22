@@ -1,4 +1,3 @@
-// src/models/pageSetting.js
 module.exports = (sequelize, DataTypes) => {
   const PageSetting = sequelize.define('PageSetting', {
     id: {
@@ -27,14 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 'text',
       validate: {
         isIn: {
-          args: [['text', 'image', 'json']],
-          msg: "Le type doit être 'text', 'image' ou 'json'.",
+          args: [['text', 'json']],  // retiré 'image'
+          msg: "Le type doit être 'text' ou 'json'.",
         },
       },
-    },
-    image: {  // Ajout du champ image
-      type: DataTypes.STRING,
-      allowNull: true, // L'image peut être nulle
     },
   }, {
     tableName: 'page_settings',

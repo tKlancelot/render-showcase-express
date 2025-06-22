@@ -1,26 +1,26 @@
 const verifyToken = require('../auth/verifyToken');
 const multer = require('multer');
-const path = require('path');
 const { User } = require('../db/sequelize');
 const bcrypt = require('bcryptjs');
+const cloudinary = require('../utils/cloudinary');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-// Configuration de multer pour gérer les fichiers (images)
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // dossier de destination
+// Config multer-storage-cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'avatars', // ou 'users' selon ta nomenclature
+    allowed_formats: ['jpg', 'png', 'webp'],
+    transformation: [{ width: 1200, crop: 'limit' }],
   },
-  filename: (req, file, cb) => {
-    const fileName = Date.now() + path.extname(file.originalname); // nom unique
-    cb(null, fileName);
-  }
 });
-const upload = multer({ storage: storage });
+
+const upload = multer({ storage });
 
 module.exports = (app) => {
   app.put('/api/users/:id', verifyToken, upload.single('mainPicture'), async (req, res) => {
     const id = req.params.id;
     const { username, password, role } = req.body;
-    const mainPicture = req.file ? req.file.filename : null;
 
     try {
       let updatedFields = { username, role };
@@ -29,22 +29,21 @@ module.exports = (app) => {
         updatedFields.password = await bcrypt.hash(password, 10);
       }
 
-      if (mainPicture) {
-        updatedFields.mainPicture = mainPicture;
+      if (req.file && req.file.path) {
+        // req.file.path contient l'URL Cloudinary de l'image uploadée
+        updatedFields.mainPicture = req.file.path;
       }
 
       const [updatedRowsCount] = await User.update(updatedFields, { where: { id } });
 
       if (updatedRowsCount === 0) {
-        const message = `L'utilisateur avec l'ID ${id} n'existe pas.`;
-        return res.status(404).json({ message });
+        return res.status(404).json({ message: `L'utilisateur avec l'ID ${id} n'existe pas.` });
       }
 
-      const message = `L'utilisateur avec l'ID ${id} a été mis à jour avec succès.`;
-      res.status(200).json({ message });
+      return res.status(200).json({ message: `L'utilisateur avec l'ID ${id} a été mis à jour avec succès.` });
     } catch (error) {
       console.error('Erreur lors de la mise à jour de l’utilisateur:', error);
-      res.status(500).json({ message: 'Une erreur est survenue lors de la mise à jour de l’utilisateur.' });
+      return res.status(500).json({ message: 'Une erreur est survenue lors de la mise à jour de l’utilisateur.' });
     }
   });
 };
