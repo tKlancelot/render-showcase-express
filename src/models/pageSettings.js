@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 'text',
       validate: {
         isIn: {
-          args: [['text', 'json']],  // retiré 'image'
+          args: [['text', 'json']],
           msg: "Le type doit être 'text' ou 'json'.",
         },
       },
