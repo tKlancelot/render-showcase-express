@@ -59,7 +59,7 @@ const initDb = async () => {
   try {
     await sequelize.authenticate();
     console.log('Connexion à la base de données réussie!');
-    await sequelize.sync({ force: false });
+    await sequelize.sync({ alter: true }); // ou { force: true } selon besoin
     console.log('La synchronisation des modèles est terminée.');
     await createDefaultUser();
     console.log(`Connexion DB : ${DB_DIALECT}://${DB_USER}@${DB_HOST}:${DB_PORT}/${DB_NAME}`);
